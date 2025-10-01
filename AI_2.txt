@@ -1,0 +1,11 @@
+Types of AI
+
+AI can be classified into two major categories: based on capabilities and based on functionality. In terms of capabilities, there are three 
+main types. Artificial Narrow Intelligence (ANI) refers to AI that specializes in a single task, such as voice assistants or spam filters. 
+It is the most common form of AI in use today. Artificial General Intelligence (AGI) is the hypothetical stage where AI can perform any 
+intellectual task like a human, showing flexibility and adaptability across domains. Artificial Superintelligence (ASI) goes beyond human 
+intelligence and remains a futuristic concept that raises ethical and safety concerns. Based on functionality, AI is categorized as Reactive 
+Machines, which only respond to current inputs without memory (e.g., IBM’s Deep Blue chess program); Limited Memory AI, which uses past data to 
+make decisions (e.g., self-driving cars); Theory of Mind AI, an advanced form that aims to understand human emotions and intentions; and 
+Self-Aware AI, which is purely hypothetical and would mean machines gaining consciousness. These classifications highlight the journey of AI 
+from basic automation to futuristic, human-like intelligence.

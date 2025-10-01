@@ -1,0 +1,13 @@
+History of AI
+
+The history of AI stretches from early philosophical ideas to today’s advanced technologies. Ancient civilizations imagined artificial beings, 
+such as mechanical servants in Greek myths, showing that the dream of intelligent machines has existed for centuries. In the 20th century, the 
+groundwork for AI was laid with Alan Turing’s 1950 paper “Computing Machinery and Intelligence”, which proposed the famous Turing Test to 
+measure machine intelligence. The official birth of AI as a field took place in 1956 at the Dartmouth Conference, where John McCarthy, Marvin 
+Minsky, Nathaniel Rochester, and Claude Shannon discussed the possibilities of machines simulating intelligence. Early optimism in the 1960s 
+led to the creation of basic AI programs and expert systems, but limited hardware and unrealistic expectations resulted in periods of slowed 
+progress, known as “AI Winters.” However, the 1980s revived interest with expert systems and symbolic AI. The real transformation began in the 
+late 1990s and early 2000s when greater computing power, machine learning algorithms, and access to big data allowed AI to flourish. Notable 
+milestones include IBM’s Deep Blue defeating world chess champion Garry Kasparov in 1997, the rise of deep learning in the 2010s, and the 
+development of powerful models for language processing, image recognition, and autonomous technologies. Today, AI continues to grow at an 
+unprecedented pace, fueling innovations in nearly every industry.

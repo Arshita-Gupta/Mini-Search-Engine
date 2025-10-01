@@ -1,0 +1,12 @@
+What is AI?
+
+Artificial Intelligence (AI) is a specialized field of computer science that focuses on designing machines or systems capable of performing 
+tasks that normally require human intelligence. It is based on the idea of simulating cognitive functions such as learning, reasoning, 
+decision-making, and problem-solving using algorithms and computational models. AI systems are built to analyze data, recognize patterns, 
+and make predictions or decisions with minimal human intervention. Unlike traditional computer programs that follow explicit instructions, 
+AI is adaptive and can improve its performance through experience. For example, virtual assistants like Siri or Alexa, recommendation systems 
+on Netflix or YouTube, and self-driving cars are all applications of AI. At its core, AI combines disciplines like mathematics, statistics, 
+psychology, linguistics, and computer science to create intelligent systems. The goal is not only to mimic human intelligence but also to 
+enhance human capabilities by automating repetitive work, processing vast amounts of data, and providing insights beyond normal human capacity.
+AI has become a transformative technology of the 21st century, influencing nearly every sector including healthcare, finance, education, 
+manufacturing, and communication.
