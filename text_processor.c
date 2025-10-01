@@ -44,11 +44,22 @@ int isvalid(const char* word){
     return 0;
 }
 
-int tokenizeText(const char* text){
+int tokenizeText(const char* text,int maxtoken){
     if(!text)return 0;
 
     char* temp = (char*)malloc((strlen(text)+1)*sizeof(char));
     strcpy(temp,text);
 
-    
+    int tokencount = 0;
+    char* token = strtok(temp," \n\t\r");
+
+    while(token && tokencount<maxtoken){
+        if(isvalid(token)){
+            strcpy(token[tokencount],token);
+            tokencount++;
+        }
+        token = strtok(NULL," \n\t\r");
+    }
+    free(temp);
+    return tokencount;
 }
