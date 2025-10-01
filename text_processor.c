@@ -2,6 +2,8 @@
 #include<string.h>
 #include<ctype.h>
 
+#define MAX_WORD_LEN 100
+
 char* preprocessText(const char* text){
     if(!text) return NULL;
     int len = strlen(text);
@@ -44,7 +46,7 @@ int isvalid(const char* word){
     return 0;
 }
 
-int tokenizeText(const char* text,int maxtoken){
+int tokenizeText(const char* text,char tokens[][MAX_WORD_LEN],int maxtoken){
     if(!text)return 0;
 
     char* temp = (char*)malloc((strlen(text)+1)*sizeof(char));
