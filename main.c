@@ -1,12 +1,14 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "hash.c"
-#include "inverted.c"
-#include "text_processor.c"
+#include "hash.h"
+#include "inverted.h"
+#include "text_processor.h"
 
 int main ()
 {
+    HashTable* index = createHashTable();
+    FileInfo* files = NULL;
 
     char *filename[]={
         "files/AI_1.txt",
@@ -20,8 +22,9 @@ int main ()
         "files/AI_9.txt",
         "files/AI_10.txt"
     };
-    
-    int numsfile= 10;
 
+    int numsfile= 10;
+    int indexedFiles = buildInvertedIndex(index, &files, filename, numsfile);
+    printf("Successfully indexed %d files.\n\n", indexedFiles);
 
 }

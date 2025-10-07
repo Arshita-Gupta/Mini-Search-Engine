@@ -1,34 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include "hash.h"
 
-#define HASH_SIZE 10007
-#define MAX_WORD_LEN 100
-#define MAX_FILENAME 256
-
-// Posting list node for inverted index
-typedef struct PostingNode
-{
-    int fileId;
-    int frequency;
-    struct PostingNode *next;
-} PostingNode;
-
-// Word entry in hash table
-typedef struct WordEntry
-{
-    char word[MAX_WORD_LEN];
-    PostingNode *postings;
-    struct WordEntry *next;
-} WordEntry;
-
-// Hash table structure
-typedef struct HashTable
-{
-    WordEntry *buckets[HASH_SIZE];
-    int size;
-} HashTable;
+// Types are declared in hash.h
 
 // same as structure(linked list we create a ADT where we initalize)
 HashTable *createHashTable()
@@ -143,44 +115,44 @@ WordEntry* findWord(HashTable* table, const char* word) {             // its  a 
     return entry;
 }
 
-int main() 
-{
-    // Create a hash table
-    HashTable *table = createHashTable();
-    if (!table)
-    {
-        printf("Failed to create hash table.\n");
-        return 1;
-    }
+// int main() 
+// {
+//     // Create a hash table
+//     HashTable *table = createHashTable();
+//     if (!table)
+//     {
+//         printf("Failed to create hash table.\n");
+//         return 1;
+//     }
 
-    // Insert words into the hash table
-    insertWord(table, "example", 1);
-    insertWord(table, "test", 2);
-    insertWord(table, "example", 1);
-    insertWord(table, "data", 3);
+//     // Insert words into the hash table
+//     insertWord(table, "example", 1);
+//     insertWord(table, "test", 2);
+//     insertWord(table, "example", 1);
+//     insertWord(table, "data", 3);
 
-    // Check if words are inserted correctly
-    char ch[10];
-    fgets(ch, 10, stdin);
-    ch[strcspn(ch, "\n")] = '\0';  
-    unsigned int index = hash(ch); // Pass the array directly
-    WordEntry *entry = table->buckets[index];
+//     // Check if words are inserted correctly
+//     char ch[10];
+//     fgets(ch, 10, stdin);
+//     ch[strcspn(ch, "\n")] = '\0';  
+//     unsigned int index = hash(ch); // Pass the array directly
+//     WordEntry *entry = table->buckets[index];
 
-    printf("Testing hash table:\n");
-    while (entry)
-    {
-        printf("Word: %s\n", entry->word);
-        PostingNode *posting = entry->postings;
-        while (posting)
-        {
-            printf("  File ID: %d, Frequency: %d\n", posting->fileId, posting->frequency);
-            posting = posting->next;
-        }
-        entry = entry->next;
-    }
+//     printf("Testing hash table:\n");
+//     while (entry)
+//     {
+//         printf("Word: %s\n", entry->word);
+//         PostingNode *posting = entry->postings;
+//         while (posting)
+//         {
+//             printf("  File ID: %d, Frequency: %d\n", posting->fileId, posting->frequency);
+//             posting = posting->next;
+//         }
+//         entry = entry->next;
+//     }
 
-    // Free the hash table
-    freeHashTable(table);
+//     // Free the hash table
+//     freeHashTable(table);
 
-    return 0;
-}
+//     return 0;
+// }
