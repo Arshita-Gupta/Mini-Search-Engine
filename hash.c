@@ -76,12 +76,12 @@ void insertWord(HashTable *table, const char *word, int fileid)
         entry = malloc(sizeof(WordEntry));
         strcpy(entry->word, word);
         entry->postings = NULL;
-        entry->next = table->buckets[index];
+        entry->next = table->buckets[index];  // using concept of insert at beginning
         table->buckets[index] = entry;
         table->size++;
     }
     PostingNode *posting = entry->postings;
-    while (posting && posting->fileId != fileid)
+    while (posting && posting->fileId != fileid)     // basically we are checking for the file is there any file for this 
     {
         posting = posting->next;
     }
@@ -130,7 +130,20 @@ void freeHashTable(HashTable *table)
     free(table);
 }
 
-int main()
+WordEntry* findWord(HashTable* table, const char* word) {             // its  a helper for search funcition aas give particular index 
+    if(!table || !word) return NULL;
+    
+    unsigned int index = hash(word);
+    WordEntry* entry = table->buckets[index];
+    
+    while(entry && strcmp(entry->word, word) != 0) {
+        entry = entry->next;
+    }
+    
+    return entry;
+}
+
+int main() 
 {
     // Create a hash table
     HashTable *table = createHashTable();

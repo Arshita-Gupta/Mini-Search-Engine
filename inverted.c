@@ -1,4 +1,6 @@
 #include "hash.c"
+#include "text_processor.c"
+
 
 // this is file informarion structure 
 typedef struct FileInfo {
@@ -26,7 +28,23 @@ void addFileInfo(FileInfo** head, FileInfo* newFile) {
     *head = newFile;
 }
 
-
+int buildInvertedIndex(HashTable * index , FileInfo **files, char** filename , int numFiles)
+{
+    int succesfullindex = 0;
+    for ( int i =0 ; i< numFiles; i++)
+    {
+        FILE *file=fopen(filename[i],"r");
+        if(!file) {
+            printf("Error: Cannot open file %s\n", filename[i]);
+            continue;
+        }
+    FileInfo *fileInfo = createFileInfo(i,filename[i]);
+    char buffer[1024];
+    char tokens[500][MAX_WORD_LEN];
+    printf("Processing file: %s\n", filename[i]);
+    
+    }
+}
 
 void freeFileList(FileInfo* files) {
     while(files) {
