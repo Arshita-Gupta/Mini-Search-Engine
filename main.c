@@ -27,4 +27,41 @@ int main ()
     int indexedFiles = buildInvertedIndex(index, &files, filename, numsfile);
     printf("Successfully indexed %d files.\n\n", indexedFiles);
 
+    char query[256];
+    while(1) {
+        printf("Enter search query (or 'quit' to exit): ");
+        if(!fgets(query, sizeof(query), stdin)) {
+            break;
+        }
+        
+        // Remove newline
+        query[strcspn(query, "\n")] = 0;
+        
+        if(strcmp(query, "quit") == 0) {
+            break;
+        }
+        
+        if(strlen(query) == 0) {
+            continue;
+        }
+        
+        printf("\nSearching for: '%s'\n", query);
+        printf("----------------------------------------\n");
+        
+        SearchResult* results = searchQuery(index, files, query);
+        
+        if(results) {
+            printSearchResults(results);
+            freeSearchResults(results);
+        } else {
+            printf("No results found.\n");
+        }
+        
+        printf("----------------------------------------\n\n");
+    }
+
+
+    freeHashTable(index);
+    freeFileList(files);
+    return 0;
 }

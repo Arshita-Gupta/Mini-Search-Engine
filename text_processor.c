@@ -17,8 +17,8 @@ char* lowerCase(char* s){
 char* removePunc(char* s){
     for (int i = 0; s[i]; i++) {
         if (isalnum((unsigned char)s[i]) || s[i] == ' ') {
-            // keep
-        } else {
+        } 
+        else {
             s[i] = ' ';
         }
     }

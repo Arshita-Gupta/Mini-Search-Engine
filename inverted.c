@@ -1,5 +1,3 @@
-
-
 #include "hash.h"
 #include "text_processor.h"
 #include "inverted.h"
@@ -80,4 +78,80 @@ void freeFileList(FileInfo* files) {
 }
 
 
+SearchResult* searchQuery(HashTable* index, FileInfo* files, const char* query) {
+    char tokens[50][MAX_WORD_LEN];
+    char* processedQuery = preprocessText(query);
+    int tokenCount = tokenizeText(processedQuery, tokens, 50);
+    
+    SearchResult* results = NULL;
+    
+    // Simple search: find files containing any query term
+    for(int i = 0; i < tokenCount; i++) {
+        WordEntry* wordEntry = findWord(index, tokens[i]);
+        if(wordEntry) {
+            PostingNode* posting = wordEntry->postings;
+            while(posting) {
+                // Check if this file is already in results
+                SearchResult* existing = results;
+                int found = 0;
+                while(existing) {
+                    if(existing->fileId == posting->fileId) {
+                        existing->score += posting->frequency;
+                        found = 1;
+                        break;
+                    }
+                    existing = existing->next;
+                }
+                
+                if(!found) {
+                    SearchResult* newResult = malloc(sizeof(SearchResult));
+                    newResult->fileId = posting->fileId;
+                    
+                    // Find filename
+                    FileInfo* fileInfo = files;
+                    while(fileInfo && fileInfo->id != posting->fileId) {
+                        fileInfo = fileInfo->next;
+                    }
+                    
+                    if(fileInfo) {
+                        strcpy(newResult->filename, fileInfo->filename);
+                    }
+                    
+                    newResult->score = posting->frequency;
+                    newResult->next = results;
+                    results = newResult;
+                }
+                
+                posting = posting->next;
+            }
+        }
+    }
+    
+    free(processedQuery);
+    return results;
+}
 
+
+void printSearchResults(SearchResult* results) {
+    if(!results) {
+        printf("No results found.\n");
+        return;
+    }
+    
+    printf("Search Results:\n");
+    SearchResult* current = results;
+    int rank = 1;
+    
+    while(current) {
+        printf("%d. %s (Score: %.1f)\n", rank++, current->filename, current->score);
+        current = current->next;
+    }
+}
+
+void freeSearchResults(SearchResult* results) {
+    while(results) {
+        SearchResult* next = results->next;
+        free(results);
+        results = next;
+    }
+}
