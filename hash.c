@@ -33,7 +33,7 @@ unsigned int hash(const char *word)
 
 void insertWord(HashTable *table, const char *word, int fileid)
 {
-    if (!hash || !word)
+    if (!&hash || !word)
         return;
 
     int index = hash(word);
