@@ -60,7 +60,7 @@ int main ()
         printf("----------------------------------------\n\n");
     }
 
-
+    
     freeHashTable(index);
     freeFileList(files);
     return 0;
