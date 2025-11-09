@@ -1,7 +1,11 @@
 #ifndef INVERTED_H
 #define INVERTED_H
 
-#include "hash.h"
+#include "hash.h"   // keep this — your types come from here
+
+//#ifndef MAX_FILENAME
+//#define MAX_FILENAME 260   // fallback so this header is self-contained
+//#endif
 
 typedef struct FileInfo {
     int id;
@@ -11,7 +15,6 @@ typedef struct FileInfo {
     struct FileInfo* next;
 } FileInfo;
 
-// Search result structure
 typedef struct SearchResult {
     int fileId;
     char filename[MAX_FILENAME];

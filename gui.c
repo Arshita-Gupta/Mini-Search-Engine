@@ -1,8 +1,3 @@
-// gui.c — GTK3 GUI connected to your C backend
-// Build (MSYS2 MINGW64):
-//   gcc -std=c11 gui.c search_engine.c hash.c inverted.c text_processor.c \
-//       -o mini_search_gui.exe `pkg-config --cflags --libs gtk+-3.0`
-
 #include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +14,6 @@ static const char *BASE_PATH = "./files/";
 
 typedef struct {
     GtkWidget   *win;
-    //GtkWidget   *btn_choose;
     GtkWidget   *btn_load_ai;
     GtkWidget   *btn_index;
     GtkWidget   *entry_query;
@@ -72,39 +66,6 @@ static void set_status(App *app, const char *msg) {
     gtk_label_set_text(GTK_LABEL(app->lbl_status), msg);
 }
 
-//static void on_choose(GtkButton *btn, gpointer user_data) {
-//    App *app = (App*)user_data;
-//    GtkWidget *dlg = gtk_file_chooser_dialog_new(
-//        "Choose Text Files",
-//        GTK_WINDOW(app->win),
-//        GTK_FILE_CHOOSER_ACTION_OPEN,
-//        "_Cancel", GTK_RESPONSE_CANCEL,
-//        "_Add", GTK_RESPONSE_ACCEPT,
-//        NULL
-//    );
-//    gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dlg), TRUE);
-//
-//    GtkFileFilter *ff = gtk_file_filter_new();
-//    gtk_file_filter_set_name(ff, "Text files");
-//    gtk_file_filter_add_pattern(ff, "*.txt");
-//    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dlg), ff);
-//
-//    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_ACCEPT) {
-//        GSList *list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(dlg));
-//        if (!app->files) app->files = g_ptr_array_new();
-//        for (GSList *p=list; p; p=p->next) {
-//            g_ptr_array_add(app->files, p->data); // takes ownership
-//        }
-//        g_slist_free(list);
-//
-//        char msg[128];
-//        snprintf(msg, sizeof(msg), "Selected %u file(s). Click Build Index.", app->files->len);
-//        set_status(app, msg);
-//        app->indexed = FALSE;
-//    }
-//    gtk_widget_destroy(dlg);
-//}
-
 static void on_row_activated(GtkTreeView *view, GtkTreePath *tpath,
     GtkTreeViewColumn *col, gpointer user_data) {
     App *app = (App*)user_data;
@@ -124,16 +85,6 @@ static void on_row_activated(GtkTreeView *view, GtkTreePath *tpath,
 static void on_load_ai(GtkButton *btn, gpointer user_data) {
     App *app = (App*)user_data;
     if (!app->files) app->files = g_ptr_array_new();
-
-    // Add AI_1.txt ... AI_10.txt using BASE_PATH
-    //for (int i=1; i<=10; i++) {
-    //char rel[1024];
-    //snprintf(rel, sizeof(rel), "%sAI_%d.txt", BASE_PATH, i);
-
-    // Make absolute now, so the model stores openable paths
-    //char *abs = g_canonicalize_filename(rel, NULL);
-    //g_ptr_array_add(app->files, abs);  // take ownership
-//}
     set_status(app, "Loaded AI_1.txt … AI_10.txt. Click Build Index.");
     app->indexed = FALSE;
 }
@@ -232,10 +183,6 @@ int main(int argc, char **argv) {
 
     GtkWidget *row1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start(GTK_BOX(root), row1, FALSE, FALSE, 0);
-
-    //app.btn_choose = gtk_button_new_with_label("Add Files…");
-    //g_signal_connect(app.btn_choose, "clicked", G_CALLBACK(on_choose), &app);
-    //gtk_box_pack_start(GTK_BOX(row1), app.btn_choose, FALSE, FALSE, 0);
 
     app.btn_load_ai = gtk_button_new_with_label("Load AI_*.txt");
     g_signal_connect(app.btn_load_ai, "clicked", G_CALLBACK(on_load_ai), &app);
