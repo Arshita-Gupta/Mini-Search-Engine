@@ -76,7 +76,10 @@ static gboolean open_with_default(GtkWindow *parent, const char *path) {
     char *abs = make_absolute(path);
     if (!abs) return FALSE;
     if (!g_file_test(abs, G_FILE_TEST_EXISTS)) {
-        GtkWidget *d = gtk_message_dialog_new(parent,GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,"File not found:\n%s", abs);
+        GtkWidget *d = gtk_message_dialog_new(parent,
+                        GTK_DIALOG_MODAL,
+                        GTK_MESSAGE_ERROR, 
+                        GTK_BUTTONS_CLOSE, "File not found:\n%s", abs);
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         g_free(abs);
@@ -85,8 +88,10 @@ static gboolean open_with_default(GtkWindow *parent, const char *path) {
 
     char *uri = g_filename_to_uri(abs, NULL, &err);
     if (!uri) {
-        GtkWidget *d = gtk_message_dialog_new(parent, GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,"Failed to form URI:\n%s",
-                                                err ? err->message : "Unknown");
+        GtkWidget *d = gtk_message_dialog_new(parent, 
+                        GTK_DIALOG_MODAL,
+                        GTK_MESSAGE_ERROR, 
+                        GTK_BUTTONS_CLOSE,"Failed to form URI:\n%s",err ? err->message : "Unknown");
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         if (err) g_error_free(err);
@@ -96,7 +101,10 @@ static gboolean open_with_default(GtkWindow *parent, const char *path) {
 
     gtk_show_uri_on_window(parent, uri, GDK_CURRENT_TIME, &err);
     if (err) {
-        GtkWidget *d = gtk_message_dialog_new(parent, GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,"Failed to open:\n%s", err->message);
+        GtkWidget *d = gtk_message_dialog_new(parent, 
+                        GTK_DIALOG_MODAL,
+                        GTK_MESSAGE_ERROR, 
+                        GTK_BUTTONS_CLOSE,"Failed to open:\n%s", err->message);
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         g_error_free(err);
@@ -121,8 +129,10 @@ static void reveal_containing_folder(GtkWindow *parent, const char *path) {
             gtk_show_uri_on_window(parent, uri, GDK_CURRENT_TIME, &err);
             g_free(uri);
         } else {
-            GtkWidget *d = gtk_message_dialog_new(parent, GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,"Cannot open folder:\n%s",
-                                                  err ? err->message : dir);
+            GtkWidget *d = gtk_message_dialog_new(parent, 
+                            GTK_DIALOG_MODAL,
+                            GTK_MESSAGE_ERROR, 
+                            GTK_BUTTONS_CLOSE,"Cannot open folder:\n%s",err ? err->message : dir);
             gtk_dialog_run(GTK_DIALOG(d));
             gtk_widget_destroy(d);
             if (err) g_error_free(err);
@@ -154,7 +164,10 @@ static int populate_results(App *app, SearchResult *head) {
         int score = (int)SR_SCORE(r);
         char *preview = read_preview(file);
         gtk_list_store_append(app->store, &it);
-        gtk_list_store_set(app->store, &it, COL_FILE,    file, COL_SCORE,   score, COL_PREVIEW, preview ? preview : "",-1);
+        gtk_list_store_set(app->store, &it, 
+                        COL_FILE,    file, 
+                        COL_SCORE,   score, 
+                        COL_PREVIEW, preview ? preview : "",-1);
         if (preview) g_free(preview);
         count++;
     }
@@ -166,7 +179,10 @@ static void show_preview_dialog(App *app, const char *path, const char *query) {
     char *abs = make_absolute(path);
     if (!abs) return;
     if (!g_file_test(abs, G_FILE_TEST_EXISTS)) {
-        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,"File not found:\n%s", abs);
+        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),
+                                GTK_DIALOG_MODAL,
+                                GTK_MESSAGE_ERROR,
+                                GTK_BUTTONS_OK,"File not found:\n%s", abs);
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         g_free(abs);
@@ -176,15 +192,20 @@ static void show_preview_dialog(App *app, const char *path, const char *query) {
     gchar *contents = NULL;
     gsize len = 0;
     if (!g_file_get_contents(abs, &contents, &len, &err)) {
-        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),GTK_DIALOG_MODAL,GTK_MESSAGE_ERROR,GTK_BUTTONS_OK,"Cannot read file: %s",
-                                              err ? err->message : "(unknown)");
+        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),
+                            GTK_DIALOG_MODAL,
+                            GTK_MESSAGE_ERROR,
+                            GTK_BUTTONS_OK,"Cannot read file: %s",err ? err->message : "(unknown)");
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         if (err) g_error_free(err);
         g_free(abs);
         return;
     }
-    GtkWidget *dlg = gtk_dialog_new_with_buttons(path,GTK_WINDOW(app->window),GTK_DIALOG_MODAL,"_Close", GTK_RESPONSE_CLOSE, NULL);
+    GtkWidget *dlg = gtk_dialog_new_with_buttons(path,
+                    GTK_WINDOW(app->window),
+                    GTK_DIALOG_MODAL,"_Close",
+                    GTK_RESPONSE_CLOSE, NULL);
     GtkWidget *area = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
     GtkWidget *sc   = gtk_scrolled_window_new(NULL, NULL);
     gtk_widget_set_size_request(sc, 800, 600);
@@ -203,8 +224,9 @@ static void show_preview_dialog(App *app, const char *path, const char *query) {
         GtkTextIter start, match_start, match_end;
         gtk_text_buffer_get_start_iter(buf, &start);
 
-        while (gtk_text_iter_forward_search(&start, query, GTK_TEXT_SEARCH_TEXT_ONLY | GTK_TEXT_SEARCH_CASE_INSENSITIVE,&match_start, 
-                                                    &match_end, NULL)) {
+        while (gtk_text_iter_forward_search(&start, query, 
+                            GTK_TEXT_SEARCH_TEXT_ONLY | GTK_TEXT_SEARCH_CASE_INSENSITIVE,
+                            &match_start, &match_end, NULL)) {
             GtkTextTagTable *tt = gtk_text_buffer_get_tag_table(buf);
             GtkTextTag *hl = gtk_text_tag_table_lookup(tt, "highlight");
             if (!hl) {
@@ -254,7 +276,10 @@ static void run_search(App *app) {
     }
     trace_status(msg);
 
-    GtkWidget *dialog = gtk_message_dialog_new( GTK_WINDOW(app->window), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "%s", msg);
+    GtkWidget *dialog = gtk_message_dialog_new( GTK_WINDOW(app->window), 
+                    GTK_DIALOG_MODAL, 
+                    GTK_MESSAGE_INFO, 
+                    GTK_BUTTONS_OK, "%s", msg);
     gtk_window_set_title(GTK_WINDOW(dialog), "Search Results");
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
@@ -286,8 +311,10 @@ static void on_index_files(GtkButton *b, gpointer ud) {
     HANDLE hFind = FindFirstFileA(searchPattern, &data);
 
     if (hFind == INVALID_HANDLE_VALUE) {
-        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-            "Could not find any .txt files in 'files' folder.\n" "Make sure the folder exists next to the executable.");
+        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window), 
+                    GTK_DIALOG_MODAL, 
+                    GTK_MESSAGE_ERROR, 
+                    GTK_BUTTONS_OK, "Could not find any .txt files in 'files' folder.\n" "Make sure the folder exists next to the executable.");
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         return;
@@ -308,8 +335,10 @@ static void on_index_files(GtkButton *b, gpointer ud) {
     FindClose(hFind);
 
     if (count == 0) {
-        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),GTK_DIALOG_MODAL,GTK_MESSAGE_WARNING,GTK_BUTTONS_OK,
-                                                "No .txt files found in 'files' folder.");
+        GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),
+                        GTK_DIALOG_MODAL,
+                        GTK_MESSAGE_WARNING,
+                        GTK_BUTTONS_OK, "No .txt files found in 'files' folder.");
         gtk_dialog_run(GTK_DIALOG(d));
         gtk_widget_destroy(d);
         return;
@@ -325,7 +354,10 @@ static void on_index_files(GtkButton *b, gpointer ud) {
     trace_status(msg);
     set_info_text(app, msg);
 
-    GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,"%s", msg);
+    GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window),
+                    GTK_DIALOG_MODAL,
+                    GTK_MESSAGE_INFO,
+                    GTK_BUTTONS_OK,"%s", msg);
     gtk_dialog_run(GTK_DIALOG(d));
     gtk_widget_destroy(d);
 }
@@ -334,8 +366,10 @@ static void on_stats(GtkButton *b, gpointer ud) {
     (void)b;
     App *app = (App *)ud;
     printEngineStats(app->engine);
-    GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window), GTK_DIALOG_MODAL,GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
-                                            "Engine statistics printed to the terminal.");
+    GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(app->window), 
+                GTK_DIALOG_MODAL,
+                GTK_MESSAGE_INFO, 
+                GTK_BUTTONS_OK, "Engine statistics printed to the terminal.");
     gtk_dialog_run(GTK_DIALOG(d));
     gtk_widget_destroy(d);
 }
