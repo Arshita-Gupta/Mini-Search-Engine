@@ -128,8 +128,52 @@ SearchResult* searchQuery(HashTable* index, FileInfo* files, const char* query) 
     }
     
     free(processedQuery);
+    results = sortResults(results);
     return results;
 }
+
+SearchResult* sortResults(SearchResult* head) {
+    if (!head || !head->next) return head;
+
+    int swapped;
+    SearchResult *ptr, *lptr = NULL;
+
+    do {
+        swapped = 0;
+        ptr = head;
+
+        while (ptr->next != lptr) {
+
+            if (ptr->score < ptr->next->score) {
+                // swap score
+                float tempScore = ptr->score;
+                ptr->score = ptr->next->score;
+                ptr->next->score = tempScore;
+
+                // swap fileId
+                int tempId = ptr->fileId;
+                ptr->fileId = ptr->next->fileId;
+                ptr->next->fileId = tempId;
+
+                // swap filename
+                char tempFile[MAX_FILENAME];
+                strcpy(tempFile, ptr->filename);
+                strcpy(ptr->filename, ptr->next->filename);
+                strcpy(ptr->next->filename, tempFile);
+
+                swapped = 1;
+            }
+
+            ptr = ptr->next;
+        }
+
+        lptr = ptr;
+
+    } while (swapped);
+
+    return head;
+}
+
 
 
 void printSearchResults(SearchResult* results) {
