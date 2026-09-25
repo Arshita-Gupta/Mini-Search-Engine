@@ -1,0 +1,16 @@
+# Compiled binaries
+*.exe
+*.out
+*.app
+mini_search
+search_engine
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Object files
+*.o
+*.obj
